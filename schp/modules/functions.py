@@ -46,7 +46,7 @@ class InPlaceABN(autograd.Function):
         ctx.save_for_backward(x_norm, var, weight, bias)
         ctx.mark_non_differentiable(running_mean, running_var)
         
-        return x_norm
+        return x_norm, running_mean, running_var
     
     @staticmethod
     @once_differentiable

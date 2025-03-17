@@ -1,8 +1,6 @@
-from os import path
 import torch
 import torch.distributed as dist
 import torch.autograd as autograd
-import torch.cuda.comm as comm
 from torch.autograd.function import once_differentiable
 
 

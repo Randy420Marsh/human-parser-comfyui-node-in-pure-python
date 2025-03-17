@@ -1,3 +1,5 @@
+This custom node doesn't require a runtime build for InPlaceABNSync.
+
 # Cozy Human Parser
 
 Fast, VRAM-light ComfyUI nodes to generate masks for specific body parts and clothes or fashion items. Runs on CPU and CUDA.

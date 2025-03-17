@@ -42,6 +42,8 @@ class InPlaceABN(autograd.Function):
         # Apply activation
         if ctx.activation == 'leaky_relu':
             x_norm = torch.where(x_norm > 0, x_norm, x_norm * ctx.slope)
+        else:
+            raise NotImplementedError()
         
         ctx.save_for_backward(x_norm, var, weight, bias)
         ctx.mark_non_differentiable(running_mean, running_var)
@@ -127,6 +129,8 @@ class InPlaceABNSync(autograd.Function):
         # Apply activation
         if ctx.activation == 'leaky_relu':
             x_norm = torch.where(x_norm > 0, x_norm, x_norm * ctx.slope)
+        else:
+            raise NotImplementedError()
 
         ctx.save_for_backward(x_norm, var, weight, bias)
         ctx.mark_non_differentiable(running_mean, running_var)

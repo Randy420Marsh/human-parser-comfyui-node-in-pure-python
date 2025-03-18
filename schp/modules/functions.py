@@ -38,8 +38,12 @@ class InPlaceABN(autograd.Function):
             x_norm = x_norm * weight.view(1, -1, 1, 1) + bias.view(1, -1, 1, 1)
         
         # Apply activation
-        if ctx.activation == 'leaky_relu':
+        if ctx.activation == ACT_LEAKY_RELU:
             x_norm = torch.where(x_norm > 0, x_norm, x_norm * ctx.slope)
+        elif ctx.activation == ACT_RELU:
+            x_norm = torch.where(x > 0, x, torch.zeros_like(x))
+        elif ctx.activation == ACT_ELU:
+            x_norm = torch.where(x > 0, x, (torch.exp(x) - 1))
         
         ctx.save_for_backward(x_norm, var, weight, bias)
         ctx.mark_non_differentiable(running_mean, running_var)
@@ -52,8 +56,12 @@ class InPlaceABN(autograd.Function):
         z, var, weight, bias = ctx.saved_tensors
         
         # Undo activation
-        if ctx.activation == 'leaky_relu':
+        if ctx.activation == ACT_LEAKY_RELU:
             dz = torch.where(z > 0, dz, dz * ctx.slope)
+        elif ctx.activation == ACT_RELU:
+            dz = torch.where(z > 0, dz, torch.zeros_like(dz))
+        elif ctx.activation == ACT_ELU:
+            dz = torch.where(z > 0, dz, dz * torch.exp(z))
         
         # Compute gradients
         if ctx.training:
@@ -123,8 +131,12 @@ class InPlaceABNSync(autograd.Function):
             x_norm = x_norm * weight.view(1, -1, 1, 1) + bias.view(1, -1, 1, 1)
 
         # Apply activation
-        if ctx.activation == 'leaky_relu':
+        if ctx.activation == ACT_LEAKY_RELU:
             x_norm = torch.where(x_norm > 0, x_norm, x_norm * ctx.slope)
+        elif ctx.activation == ACT_RELU:
+            x_norm = torch.where(x > 0, x, torch.zeros_like(x))
+        elif ctx.activation == ACT_ELU:
+            x_norm = torch.where(x > 0, x, (torch.exp(x) - 1))
 
         ctx.save_for_backward(x_norm, var, weight, bias)
         ctx.mark_non_differentiable(running_mean, running_var)
@@ -137,8 +149,12 @@ class InPlaceABNSync(autograd.Function):
         z, var, weight, bias = ctx.saved_tensors
 
         # Undo activation
-        if ctx.activation == 'leaky_relu':
+        if ctx.activation == ACT_LEAKY_RELU:
             dz = torch.where(z > 0, dz, dz * ctx.slope)
+        elif ctx.activation == ACT_RELU:
+            dz = torch.where(z > 0, dz, torch.zeros_like(dz))
+        elif ctx.activation == ACT_ELU:
+            dz = torch.where(z > 0, dz, dz * torch.exp(z))
 
         # Compute gradients
         if ctx.training:

@@ -6,6 +6,8 @@ from torch.autograd.function import once_differentiable
 
 # Activation names
 ACT_LEAKY_RELU = "leaky_relu"
+ACT_RELU = "relu"
+ACT_ELU = "elu"
 ACT_NONE = "none"
 
 
@@ -174,4 +176,4 @@ class InPlaceABNSync(autograd.Function):
 inplace_abn = InPlaceABN.apply
 inplace_abn_sync = InPlaceABNSync.apply
 
-__all__ = ["inplace_abn", "inplace_abn_sync", "ACT_LEAKY_RELU", "ACT_NONE"]
+__all__ = ["inplace_abn", "inplace_abn_sync", "ACT_LEAKY_RELU", "ACT_RELU", "ACT_ELU", "ACT_NONE"]

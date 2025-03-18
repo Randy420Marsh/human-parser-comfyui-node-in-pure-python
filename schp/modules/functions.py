@@ -14,7 +14,7 @@ ACT_NONE = "none"
 class InPlaceABN(autograd.Function):
     @staticmethod
     def forward(ctx, x, weight, bias, running_mean, running_var,
-                training=True, momentum=0.1, eps=1e-05, activation='leaky_relu', slope=0.01):
+                training=True, momentum=0.1, eps=1e-05, activation="leaky_relu", slope=0.01):
         ctx.training = training
         ctx.momentum = momentum
         ctx.eps = eps
@@ -84,7 +84,7 @@ class InPlaceABN(autograd.Function):
 class InPlaceABNSync(autograd.Function):
     @classmethod
     def forward(cls, ctx, x, weight, bias, running_mean, running_var,
-                training=True, momentum=0.1, eps=1e-05, activation='leaky_relu', slope=0.01, equal_batches=True):
+                training=True, momentum=0.1, eps=1e-05, activation="leaky_relu", slope=0.01, equal_batches=True):
         ctx.training = training
         ctx.momentum = momentum
         ctx.eps = eps

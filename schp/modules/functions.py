@@ -5,9 +5,7 @@ from torch.autograd.function import once_differentiable
 
 
 # Activation names
-ACT_RELU = "relu"
 ACT_LEAKY_RELU = "leaky_relu"
-ACT_ELU = "elu"
 ACT_NONE = "none"
 
 
@@ -40,8 +38,6 @@ class InPlaceABN(autograd.Function):
         # Apply activation
         if ctx.activation == 'leaky_relu':
             x_norm = torch.where(x_norm > 0, x_norm, x_norm * ctx.slope)
-        else:
-            raise NotImplementedError()
         
         ctx.save_for_backward(x_norm, var, weight, bias)
         ctx.mark_non_differentiable(running_mean, running_var)
@@ -127,8 +123,6 @@ class InPlaceABNSync(autograd.Function):
         # Apply activation
         if ctx.activation == 'leaky_relu':
             x_norm = torch.where(x_norm > 0, x_norm, x_norm * ctx.slope)
-        else:
-            raise NotImplementedError()
 
         ctx.save_for_backward(x_norm, var, weight, bias)
         ctx.mark_non_differentiable(running_mean, running_var)
@@ -180,4 +174,4 @@ class InPlaceABNSync(autograd.Function):
 inplace_abn = InPlaceABN.apply
 inplace_abn_sync = InPlaceABNSync.apply
 
-__all__ = ["inplace_abn", "inplace_abn_sync", "ACT_RELU", "ACT_LEAKY_RELU", "ACT_ELU", "ACT_NONE"]
+__all__ = ["inplace_abn", "inplace_abn_sync", "ACT_LEAKY_RELU", "ACT_NONE"]

@@ -41,9 +41,9 @@ class InPlaceABN(autograd.Function):
         if ctx.activation == ACT_LEAKY_RELU:
             x_norm = torch.where(x_norm > 0, x_norm, x_norm * ctx.slope)
         elif ctx.activation == ACT_RELU:
-            x_norm = torch.where(x > 0, x, torch.zeros_like(x))
+            x_norm = torch.where(x_norm > 0, x_norm, torch.zeros_like(x_norm))
         elif ctx.activation == ACT_ELU:
-            x_norm = torch.where(x > 0, x, (torch.exp(x) - 1))
+            x_norm = torch.where(x_norm > 0, x_norm, (torch.exp(x) - 1))
         
         ctx.save_for_backward(x_norm, var, weight, bias)
         ctx.mark_non_differentiable(running_mean, running_var)
@@ -134,9 +134,9 @@ class InPlaceABNSync(autograd.Function):
         if ctx.activation == ACT_LEAKY_RELU:
             x_norm = torch.where(x_norm > 0, x_norm, x_norm * ctx.slope)
         elif ctx.activation == ACT_RELU:
-            x_norm = torch.where(x > 0, x, torch.zeros_like(x))
+            x_norm = torch.where(x_norm > 0, x_norm, torch.zeros_like(x_norm))
         elif ctx.activation == ACT_ELU:
-            x_norm = torch.where(x > 0, x, (torch.exp(x) - 1))
+            x_norm = torch.where(x_norm > 0, x_norm, (torch.exp(x) - 1))
 
         ctx.save_for_backward(x_norm, var, weight, bias)
         ctx.mark_non_differentiable(running_mean, running_var)
